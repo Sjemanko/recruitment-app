@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Npgsql.Internal.TypeHandlers;
 
@@ -13,8 +14,10 @@ namespace recruitment_app.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Uuid { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
+        [JsonIgnore]
         public List<User> Users { get; set; } = new();
-        public List<Question> Questions { get; set; } = new();
+        // public List<User>? Users { get; set; }
+        // public List<Question>? Questions { get; set; }
     }
 }

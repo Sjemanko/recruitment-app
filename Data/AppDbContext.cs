@@ -9,28 +9,27 @@ namespace recruitment_app.Data
 {
     public class AppDbContext : DbContext
     {
-        // public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        // {
-        // }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
-        public DbSet<Language> Languages { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Question> Questions { get; set; }
+        public virtual DbSet<Language> Languages { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Question> Questions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-            optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=recruitment-app;User ID=postgres;Password=password;");
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+        //     optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=recruitment-app;User ID=postgres;Password=password;");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Language>()
                 .HasMany(l => l.Users)
-                .WithMany(u => u.Languages)
-                .UsingEntity(j => j.ToTable("UserLanguages"));
+                .WithMany(u => u.Languages);
 
-            modelBuilder.Entity<Question>()
-                .HasOne(l => l.Language)
-                .WithMany(q => q.Questions)
-                .HasForeignKey("LanguageId");
+            // modelBuilder.Entity<Question>()
+            //     .HasOne(l => l.Language)
+            //     .WithMany(q => q.Questions)
+            //     .HasForeignKey("LanguageId");
         }
     }
 }
