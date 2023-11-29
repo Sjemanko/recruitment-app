@@ -16,8 +16,6 @@ namespace recruitment_app.Models
         public Guid Uuid { get; set; }
         public string? Name { get; set; }
         [JsonIgnore]
-        public List<User> Users { get; set; } = new();
-        [JsonIgnore]
         public List<Question>? Questions { get; set; }
     }
 }

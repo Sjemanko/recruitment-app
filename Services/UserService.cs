@@ -29,13 +29,13 @@ namespace recruitment_app.Services
                     LastName = request.LastName,
                     BirthdayDate = request.BirthdayDate,
                     Email = request.Email,
-                    Image = request.Image
+                    Image = request.Image,
                 };
 
                 foreach (var language in request.Languages)
                 {
                     var existingLanguage = await _context.Languages.FirstOrDefaultAsync(l => l.Name == language.Name) ?? throw new Exception("Language not found");
-                    existingLanguage.Users.Add(NewUser);
+                    NewUser.Languages.Add(existingLanguage);
                 }
 
                 _context.Users.Add(NewUser);

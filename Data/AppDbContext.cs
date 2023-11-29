@@ -22,9 +22,9 @@ namespace recruitment_app.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Language>()
-                .HasMany(l => l.Users)
-                .WithMany(u => u.Languages);
+            modelBuilder.Entity<User>()
+                .HasMany(l => l.Languages)
+                .WithMany();
 
             // modelBuilder.Entity<Question>()
             //     .HasOne(l => l.Language)
