@@ -15,9 +15,9 @@ namespace recruitment_app.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Uuid { get; set; }
         public string? Contents { get; set; }
-        // public Guid LanguageId { get; set; }
-        // public Language? Language { get; set; }
-        // public DateOnly CreatedAt { get; init; }
-        // public DateOnly UpdatedAt { get; set; }
+        public Guid LanguageId { get; set; }
+        public Language Language { get; set; } = new();
+        public DateOnly CreatedAt { get; init; }
+        public DateOnly UpdatedAt { get; set; }
     }
 }

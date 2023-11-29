@@ -17,7 +17,7 @@ namespace recruitment_app.Models
         public string? Name { get; set; }
         [JsonIgnore]
         public List<User> Users { get; set; } = new();
-        // public List<User>? Users { get; set; }
-        // public List<Question>? Questions { get; set; }
+        [JsonIgnore]
+        public List<Question>? Questions { get; set; }
     }
 }
