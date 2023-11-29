@@ -25,7 +25,7 @@ namespace recruitment_app.Controllers
         public async Task<ActionResult<ServiceResponse<User>>> PostUser(CreateUserDto request)
         {
             var serviceResponse = await _userService.CreateUser(request);
-            if (serviceResponse.Data == null)
+            if (serviceResponse.Success == false)
             {
                 return NotFound(serviceResponse);
             }

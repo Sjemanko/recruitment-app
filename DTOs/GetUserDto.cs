@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using recruitment_app.Models;
 
 namespace recruitment_app.DTOs
 {
@@ -9,7 +10,7 @@ namespace recruitment_app.DTOs
         string FirstName,
         string LastName,
         DateOnly BirthdayDate,
-        List<LanguageCreateDto> Languages,
+        List<Language> Languages,
         string Email,
         string Image
     );

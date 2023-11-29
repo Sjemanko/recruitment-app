@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using recruitment_app.Data;
 using recruitment_app.DTOs;
@@ -12,15 +13,17 @@ namespace recruitment_app.Services
     public class UserService : IUserService
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public UserService(AppDbContext context)
+        public UserService(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<User>> CreateUser(CreateUserDto request)
+        public async Task<ServiceResponse<GetUserDto>> CreateUser(CreateUserDto request)
         {
-            var serviceResponse = new ServiceResponse<User>();
+            var serviceResponse = new ServiceResponse<GetUserDto>();
             try
             {
                 var NewUser = new User
@@ -41,7 +44,7 @@ namespace recruitment_app.Services
                 _context.Users.Add(NewUser);
                 await _context.SaveChangesAsync();
 
-                serviceResponse.Data = await _context.Users.FirstAsync(u => u.Uuid == NewUser.Uuid);
+                serviceResponse.Data = _mapper.Map<GetUserDto>(await _context.Users.FirstAsync(u => u.Uuid == NewUser.Uuid));
             }
             catch (Exception ex)
             {

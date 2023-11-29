@@ -1,6 +1,7 @@
 using recruitment_app.Data;
 using Microsoft.EntityFrameworkCore;
 using recruitment_app.Services;
+using recruitment_app;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
+
+
 
 var app = builder.Build();
 
