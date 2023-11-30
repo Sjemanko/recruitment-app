@@ -22,7 +22,7 @@ namespace recruitment_app.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<User>>> PostUser(CreateUserDto request)
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> PostUser(CreateUserDto request)
         {
             var serviceResponse = await _userService.CreateUser(request);
             if (serviceResponse.Success == false)
@@ -35,11 +35,39 @@ namespace recruitment_app.Controllers
         // [HttpGet("{id}")]
         // public async Task<ActionResult<User>> GetUserById(Guid id)
         // {
-        //     var user = await _context.Users
+        //     var user = await _userService.Users
         //         .Include(u => u.Languages)
         //         .FirstOrDefaultAsync(u => u.Uuid == id);
 
         //     return Ok(user);
         // }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<DeleteUserDto>>> DeleteUser(Guid id)
+        {
+            var serviceResponse = await _userService.DeleteUser(id);
+            if (serviceResponse.Success == false)
+            {
+                return NotFound(serviceResponse);
+            }
+            return Ok(serviceResponse);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> GetUserById(Guid id)
+        {
+            var serviceResponse = await _userService.GetUser(id);
+            if (serviceResponse.Success == false)
+            {
+                return NotFound(serviceResponse);
+            }
+            return Ok(serviceResponse);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> GetUsers()
+        {
+            return Ok(await _userService.GetUsers());
+        }
     }
 }

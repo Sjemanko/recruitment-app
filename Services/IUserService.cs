@@ -12,7 +12,7 @@ namespace recruitment_app.Services
         Task<ServiceResponse<List<GetUserDto>>> GetUsers();
         Task<ServiceResponse<GetUserDto>> GetUser(Guid id);
         Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser);
-        Task<ServiceResponse<GetUserDto>> DeleteUser(Guid id);
+        Task<ServiceResponse<DeleteUserDto>> DeleteUser(Guid id);
         Task<ServiceResponse<GetUserDto>> CreateUser(CreateUserDto request);
     }
 }

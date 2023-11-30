@@ -13,6 +13,8 @@ namespace recruitment_app
         public AutoMapperProfile()
         {
             CreateMap<User, GetUserDto>();
+            CreateMap<User, DeleteUserDto>();
+            CreateMap<Language, GetLanguageDto>();
         }
     }
 }

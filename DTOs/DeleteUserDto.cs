@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace recruitment_app.DTOs
 {
     public record struct DeleteUserDto(
-        Guid Id
+        Guid Uuid
     );
+
 }
