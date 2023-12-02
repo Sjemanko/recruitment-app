@@ -15,6 +15,7 @@ namespace recruitment_app
             CreateMap<User, GetUserDto>();
             CreateMap<User, DeleteUserDto>();
             CreateMap<Language, GetLanguageDto>();
+            CreateMap<UpdateUserDto, User>();
         }
     }
 }

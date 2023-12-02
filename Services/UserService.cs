@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using recruitment_app.Data;
 using recruitment_app.DTOs;
 using recruitment_app.Models;
+using recruitment_app.Repositories;
 
 namespace recruitment_app.Services
 {
@@ -15,11 +16,13 @@ namespace recruitment_app.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserRepository<User> _repository;
 
-        public UserService(AppDbContext context, IMapper mapper)
+        public UserService(AppDbContext context, IMapper mapper, IUserRepository<User> repository)
         {
             _context = context;
             _mapper = mapper;
+            _repository = repository;
         }
 
         public async Task<ServiceResponse<GetUserDto>> CreateUser(CreateUserDto request)
@@ -44,10 +47,11 @@ namespace recruitment_app.Services
                     newUser.Languages.Add(existingLanguage);
                 }
 
-                _context.Users.Add(newUser);
-                await _context.SaveChangesAsync();
+                await _repository.AddUser(newUser);
 
-                serviceResponse.Data = _mapper.Map<GetUserDto>(await _context.Users.FirstAsync(u => u.Uuid == newUser.Uuid));
+                // serviceResponse.Data = _mapper.Map<GetUserDto>(await _context.Users.FirstAsync(u => u.Uuid == newUser.Uuid));
+
+                serviceResponse.Data = _mapper.Map<GetUserDto>(_repository.GetUserById(newUser.Uuid));
             }
             catch (ArgumentNullException ex)
             {
@@ -62,11 +66,12 @@ namespace recruitment_app.Services
             var serviceResponse = new ServiceResponse<DeleteUserDto>();
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Uuid == id) ?? throw new ArgumentNullException(null, "User not found.");
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                // var user = await _context.Users.FirstOrDefaultAsync(u => u.Uuid == id) ?? throw new ArgumentNullException(null, "User not found.");
+                // _context.Users.Remove(user);
+                // await _context.SaveChangesAsync();
 
-                serviceResponse.Data = _mapper.Map<DeleteUserDto>(user);
+                var deletedUser = await DeleteUser(id);
+                serviceResponse.Data = _mapper.Map<DeleteUserDto>(deletedUser);
                 serviceResponse.Message = $"User has been deleted.";
             }
             catch (ArgumentNullException ex)
@@ -82,7 +87,9 @@ namespace recruitment_app.Services
             var serviceResponse = new ServiceResponse<GetUserDto>();
             try
             {
-                var user = await _context.Users.Include(u => u.Languages).FirstOrDefaultAsync(u => u.Uuid == id) ?? throw new ArgumentNullException(null, "User not found.");
+                // var user = await _context.Users.Include(u => u.Languages).FirstOrDefaultAsync(u => u.Uuid == id) ?? throw new ArgumentNullException(null, "User not found.");
+
+                var user = await _repository.GetUserByIdWithLanguages(id);
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
             }
             catch (ArgumentNullException ex)
@@ -98,15 +105,27 @@ namespace recruitment_app.Services
         {
             var serviceResponse = new ServiceResponse<List<GetUserDto>>
             {
+                // To change (move to repository)
                 Data = await _context.Users.Include(u => u.Languages).Select(u => _mapper.Map<GetUserDto>(u)).ToListAsync()
             };
 
             return serviceResponse;
         }
 
-        public Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
+        public async Task<ServiceResponse<GetUserDto>> UpdateUser(Guid uuid, UpdateUserDto updatedUser)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<GetUserDto>();
+            try
+            {
+                var existingUser = await _repository.GetUserById(uuid);
+                await _repository.UpdateUser(existingUser, _mapper.Map<User>(updatedUser));
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Message = ex.Message;
+                serviceResponse.Success = false;
+            }
+            return serviceResponse;
         }
     }
 }

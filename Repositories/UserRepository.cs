@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,18 +25,12 @@ namespace recruitment_app.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteUser(Guid uuid)
+        public async Task<User> DeleteUser(Guid uuid)
         {
             var user = await GetUserById(uuid);
-            if (user != null)
-            {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
-            }
-        }
-        public async Task<IEnumerable<User>> GetAllUsers()
-        {
-            return await _context.Users.ToListAsync();
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return user;
         }
 
         public async Task<User> GetUserById(Guid uuid)
@@ -44,9 +39,15 @@ namespace recruitment_app.Repositories
             return user;
         }
 
-        public async Task UpdateUser(User entity)
+        public async Task<User> GetUserByIdWithLanguages(Guid uuid)
         {
-            _context.Users.Update(entity);
+            var user = await _context.Users.Include(u => u.Languages).FirstOrDefaultAsync(u => u.Uuid == uuid) ?? throw new Exception("User not found");
+            return user;
+        }
+
+        public async Task UpdateUser(User user, User updatedEntity)
+        {
+            _context.Entry(user).CurrentValues.SetValues(updatedEntity);
             await _context.SaveChangesAsync();
         }
     }

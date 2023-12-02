@@ -9,8 +9,8 @@ namespace recruitment_app.Repositories
     {
         Task<T> GetUserById(Guid uuid);
         Task AddUser(T entity);
-        Task<IEnumerable<T>> GetAllUsers();
-        Task UpdateUser(T entity);
-        Task DeleteUser(Guid uuid);
+        Task UpdateUser(T user, T updatedEntity);
+        Task<T> DeleteUser(Guid uuid);
+        Task<T> GetUserByIdWithLanguages(Guid uuid);
     }
 }
