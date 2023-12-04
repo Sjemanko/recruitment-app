@@ -35,7 +35,7 @@ namespace recruitment_app.Repositories
 
         public async Task<User> GetUserById(Guid uuid)
         {
-            var user = await _context.Users.FindAsync(uuid) ?? throw new Exception("User not found");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Uuid == uuid) ?? throw new Exception("User not found");
             return user;
         }
 

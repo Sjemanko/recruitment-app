@@ -51,7 +51,7 @@ namespace recruitment_app.Services
 
                 // serviceResponse.Data = _mapper.Map<GetUserDto>(await _context.Users.FirstAsync(u => u.Uuid == newUser.Uuid));
 
-                serviceResponse.Data = _mapper.Map<GetUserDto>(_repository.GetUserById(newUser.Uuid));
+                serviceResponse.Data = _mapper.Map<GetUserDto>(await _repository.GetUserById(newUser.Uuid));
             }
             catch (ArgumentNullException ex)
             {
@@ -70,7 +70,7 @@ namespace recruitment_app.Services
                 // _context.Users.Remove(user);
                 // await _context.SaveChangesAsync();
 
-                var deletedUser = await DeleteUser(id);
+                var deletedUser = await _repository.DeleteUser(id);
                 serviceResponse.Data = _mapper.Map<DeleteUserDto>(deletedUser);
                 serviceResponse.Message = $"User has been deleted.";
             }

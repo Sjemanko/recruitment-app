@@ -2,6 +2,8 @@ using recruitment_app.Data;
 using Microsoft.EntityFrameworkCore;
 using recruitment_app.Services;
 using recruitment_app;
+using recruitment_app.Repositories;
+using recruitment_app.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository<User>, UserRepository>();
 
 
 
