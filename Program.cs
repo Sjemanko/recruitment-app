@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository<User>, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 

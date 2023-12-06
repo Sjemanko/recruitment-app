@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using recruitment_app.Data;
 using recruitment_app.DTOs;
@@ -16,13 +17,15 @@ namespace recruitment_app.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IUserRepository<User> _repository;
+        private readonly IUserRepository _repository;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(AppDbContext context, IMapper mapper, IUserRepository<User> repository)
+        public UserService(AppDbContext context, IMapper mapper, IUserRepository repository, ILogger<UserService> logger)
         {
             _context = context;
             _mapper = mapper;
             _repository = repository;
+            _logger = logger;
         }
 
         public async Task<ServiceResponse<GetUserDto>> CreateUser(CreateUserDto request)
@@ -48,8 +51,6 @@ namespace recruitment_app.Services
                 }
 
                 await _repository.AddUser(newUser);
-
-                // serviceResponse.Data = _mapper.Map<GetUserDto>(await _context.Users.FirstAsync(u => u.Uuid == newUser.Uuid));
 
                 serviceResponse.Data = _mapper.Map<GetUserDto>(await _repository.GetUserById(newUser.Uuid));
             }
@@ -117,8 +118,19 @@ namespace recruitment_app.Services
             var serviceResponse = new ServiceResponse<GetUserDto>();
             try
             {
-                var existingUser = await _repository.GetUserById(uuid);
-                await _repository.UpdateUser(existingUser, _mapper.Map<User>(updatedUser));
+                var existingUser = await _repository.GetUserByIdWithLanguages(uuid);
+
+                existingUser.Languages.Clear();
+
+                foreach (var languageDto in updatedUser.Languages)
+                {
+                    var language = _context.Languages.FirstOrDefault(l => l.Name == languageDto.Name) ?? throw new ArgumentNullException(null, "Language not found.");
+                    existingUser.Languages.Add(language);
+                }
+
+                await _repository.UpdateUser(existingUser, updatedUser);
+
+                serviceResponse.Data = _mapper.Map<GetUserDto>(await _repository.GetUserByIdWithLanguages(existingUser.Uuid));
             }
             catch (Exception ex)
             {

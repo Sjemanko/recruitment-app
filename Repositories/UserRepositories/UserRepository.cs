@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using recruitment_app.Data;
+using recruitment_app.DTOs;
 using recruitment_app.Models;
 
 namespace recruitment_app.Repositories
 {
-    public class UserRepository : IUserRepository<User>
+    public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
 
@@ -45,7 +46,7 @@ namespace recruitment_app.Repositories
             return user;
         }
 
-        public async Task UpdateUser(User user, User updatedEntity)
+        public async Task UpdateUser(User user, UpdateUserDto updatedEntity)
         {
             _context.Entry(user).CurrentValues.SetValues(updatedEntity);
             await _context.SaveChangesAsync();

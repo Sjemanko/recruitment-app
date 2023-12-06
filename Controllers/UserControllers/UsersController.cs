@@ -69,5 +69,16 @@ namespace recruitment_app.Controllers
         {
             return Ok(await _userService.GetUsers());
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> UpdateUser(Guid id, UpdateUserDto request)
+        {
+            var serviceResponse = await _userService.UpdateUser(id, request);
+            if (serviceResponse.Success == false)
+            {
+                return NotFound(serviceResponse);
+            }
+            return Ok(serviceResponse);
+        }
     }
 }
