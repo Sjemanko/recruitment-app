@@ -32,16 +32,6 @@ namespace recruitment_app.Controllers
             return Ok(serviceResponse);
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<User>> GetUserById(Guid id)
-        // {
-        //     var user = await _userService.Users
-        //         .Include(u => u.Languages)
-        //         .FirstOrDefaultAsync(u => u.Uuid == id);
-
-        //     return Ok(user);
-        // }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<DeleteUserDto>>> DeleteUser(Guid id)
         {

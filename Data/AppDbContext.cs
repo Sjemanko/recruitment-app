@@ -17,9 +17,6 @@ namespace recruitment_app.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
 
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-        //     optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=recruitment-app;User ID=postgres;Password=password;");
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()

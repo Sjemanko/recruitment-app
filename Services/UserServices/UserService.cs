@@ -18,14 +18,11 @@ namespace recruitment_app.Services
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly IUserRepository _repository;
-        private readonly ILogger<UserService> _logger;
-
-        public UserService(AppDbContext context, IMapper mapper, IUserRepository repository, ILogger<UserService> logger)
+        public UserService(AppDbContext context, IMapper mapper, IUserRepository repository)
         {
             _context = context;
             _mapper = mapper;
             _repository = repository;
-            _logger = logger;
         }
 
         public async Task<ServiceResponse<GetUserDto>> CreateUser(CreateUserDto request)
@@ -67,10 +64,6 @@ namespace recruitment_app.Services
             var serviceResponse = new ServiceResponse<DeleteUserDto>();
             try
             {
-                // var user = await _context.Users.FirstOrDefaultAsync(u => u.Uuid == id) ?? throw new ArgumentNullException(null, "User not found.");
-                // _context.Users.Remove(user);
-                // await _context.SaveChangesAsync();
-
                 var deletedUser = await _repository.DeleteUser(id);
                 serviceResponse.Data = _mapper.Map<DeleteUserDto>(deletedUser);
                 serviceResponse.Message = $"User has been deleted.";
@@ -88,8 +81,6 @@ namespace recruitment_app.Services
             var serviceResponse = new ServiceResponse<GetUserDto>();
             try
             {
-                // var user = await _context.Users.Include(u => u.Languages).FirstOrDefaultAsync(u => u.Uuid == id) ?? throw new ArgumentNullException(null, "User not found.");
-
                 var user = await _repository.GetUserByIdWithLanguages(id);
                 serviceResponse.Data = _mapper.Map<GetUserDto>(user);
             }

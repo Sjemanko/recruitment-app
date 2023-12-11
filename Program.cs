@@ -4,6 +4,8 @@ using recruitment_app.Services;
 using recruitment_app;
 using recruitment_app.Repositories;
 using recruitment_app.Models;
+using recruitment_app.Services.LanguageServices;
+using recruitment_app.Repositories.LanguageRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILanguageService, LanguageService>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 
 
 

@@ -6,15 +6,6 @@ using recruitment_app.Models;
 
 namespace recruitment_app.DTOs
 {
-    // public record struct GetUserDto(
-    //     string FirstName,
-    //     string LastName,
-    //     DateOnly BirthdayDate,
-    //     List<Language> Languages,
-    //     string Email,
-    //     string Image
-    // );
-
     public class GetUserDto
     {
         public string? FirstName { get; set; }

@@ -5,5 +5,8 @@ using System.Threading.Tasks;
 
 namespace recruitment_app.DTOs
 {
-    public record struct GetLanguageDto(string Name);
+    public class GetLanguageDto
+    {
+        public string? Name { get; set; }
+    }
 }
