@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace recruitment_app.Migrations
 {
     /// <inheritdoc />
-    public partial class migration1 : Migration
+    public partial class questionLanguageRelation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,6 +21,20 @@ namespace recruitment_app.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Languages", x => x.Uuid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    Uuid = table.Column<Guid>(type: "uuid", nullable: false),
+                    Contents = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    UpdatedAt = table.Column<DateOnly>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.Uuid);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,22 +59,25 @@ namespace recruitment_app.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Questions",
+                name: "LanguageQuestion",
                 columns: table => new
                 {
-                    Uuid = table.Column<Guid>(type: "uuid", nullable: false),
-                    Contents = table.Column<string>(type: "text", nullable: true),
-                    LanguageId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateOnly>(type: "date", nullable: false),
-                    UpdatedAt = table.Column<DateOnly>(type: "date", nullable: false)
+                    LanguagesUuid = table.Column<Guid>(type: "uuid", nullable: false),
+                    QuestionsUuid = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Questions", x => x.Uuid);
+                    table.PrimaryKey("PK_LanguageQuestion", x => new { x.LanguagesUuid, x.QuestionsUuid });
                     table.ForeignKey(
-                        name: "FK_Questions_Languages_LanguageId",
-                        column: x => x.LanguageId,
+                        name: "FK_LanguageQuestion_Languages_LanguagesUuid",
+                        column: x => x.LanguagesUuid,
                         principalTable: "Languages",
+                        principalColumn: "Uuid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LanguageQuestion_Questions_QuestionsUuid",
+                        column: x => x.QuestionsUuid,
+                        principalTable: "Questions",
                         principalColumn: "Uuid",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -90,19 +107,22 @@ namespace recruitment_app.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_LanguageQuestion_QuestionsUuid",
+                table: "LanguageQuestion",
+                column: "QuestionsUuid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LanguageUser_UserUuid",
                 table: "LanguageUser",
                 column: "UserUuid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Questions_LanguageId",
-                table: "Questions",
-                column: "LanguageId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "LanguageQuestion");
+
             migrationBuilder.DropTable(
                 name: "LanguageUser");
 
@@ -110,10 +130,10 @@ namespace recruitment_app.Migrations
                 name: "Questions");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Languages");
 
             migrationBuilder.DropTable(
-                name: "Languages");
+                name: "Users");
         }
     }
 }

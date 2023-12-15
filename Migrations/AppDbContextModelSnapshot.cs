@@ -22,6 +22,21 @@ namespace recruitment_app.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("LanguageQuestion", b =>
+                {
+                    b.Property<Guid>("LanguagesUuid")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("QuestionsUuid")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("LanguagesUuid", "QuestionsUuid");
+
+                    b.HasIndex("QuestionsUuid");
+
+                    b.ToTable("LanguageQuestion");
+                });
+
             modelBuilder.Entity("LanguageUser", b =>
                 {
                     b.Property<Guid>("LanguagesUuid")
@@ -63,15 +78,10 @@ namespace recruitment_app.Migrations
                     b.Property<DateOnly>("CreatedAt")
                         .HasColumnType("date");
 
-                    b.Property<Guid>("LanguageId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateOnly>("UpdatedAt")
                         .HasColumnType("date");
 
                     b.HasKey("Uuid");
-
-                    b.HasIndex("LanguageId");
 
                     b.ToTable("Questions");
                 });
@@ -117,6 +127,21 @@ namespace recruitment_app.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("LanguageQuestion", b =>
+                {
+                    b.HasOne("recruitment_app.Models.Language", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesUuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("recruitment_app.Models.Question", null)
+                        .WithMany()
+                        .HasForeignKey("QuestionsUuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LanguageUser", b =>
                 {
                     b.HasOne("recruitment_app.Models.Language", null)
@@ -130,17 +155,6 @@ namespace recruitment_app.Migrations
                         .HasForeignKey("UserUuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("recruitment_app.Models.Question", b =>
-                {
-                    b.HasOne("recruitment_app.Models.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Language");
                 });
 #pragma warning restore 612, 618
         }
