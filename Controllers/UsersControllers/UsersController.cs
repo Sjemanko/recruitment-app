@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using recruitment_app.Data;
 using recruitment_app.DTOs;
 using recruitment_app.Models;
 using recruitment_app.Services;

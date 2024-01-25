@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using recruitment_app.Data;
 using recruitment_app.Models;
@@ -48,7 +44,7 @@ namespace recruitment_app.Repositories.LanguageRepository
 
         public async Task<Language?> GetLanguageByName(string name)
         {
-            var language = await _context.Languages.FirstOrDefaultAsync(l => l.Name == name);
+            var language = await _context.Languages.FirstOrDefaultAsync(l => l.Name == name) ?? throw new Exception("Language not found");
             return language;
         }
     }

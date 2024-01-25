@@ -1,11 +1,11 @@
-using recruitment_app.Data;
 using Microsoft.EntityFrameworkCore;
-using recruitment_app.Services;
-using recruitment_app;
+using recruitment_app.Data;
 using recruitment_app.Repositories;
-using recruitment_app.Models;
-using recruitment_app.Services.LanguageServices;
 using recruitment_app.Repositories.LanguageRepository;
+using recruitment_app.Repositories.QuestionRepository;
+using recruitment_app.Services;
+using recruitment_app.Services.LanguageServices;
+using recruitment_app.Services.QuestionServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +20,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
-
-
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 
 var app = builder.Build();
 

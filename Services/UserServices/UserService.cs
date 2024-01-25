@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using recruitment_app.Data;
 using recruitment_app.DTOs;
@@ -43,6 +37,7 @@ namespace recruitment_app.Services
 
                 foreach (var language in request.Languages)
                 {
+                    // To change (move to repository)
                     var existingLanguage = await _context.Languages.FirstOrDefaultAsync(l => l.Name == language.Name) ?? throw new ArgumentNullException(null, "Language not found");
                     newUser.Languages.Add(existingLanguage);
                 }
@@ -115,6 +110,7 @@ namespace recruitment_app.Services
 
                 foreach (var languageDto in updatedUser.Languages)
                 {
+                    // To change (move to repository)
                     var language = _context.Languages.FirstOrDefault(l => l.Name == languageDto.Name) ?? throw new ArgumentNullException(null, "Language not found.");
                     existingUser.Languages.Add(language);
                 }

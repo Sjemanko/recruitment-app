@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using recruitment_app.DTOs;
 using recruitment_app.DTOs.LanguageDTOs;
@@ -91,7 +87,6 @@ namespace recruitment_app.Services.LanguageServices
             {
                 var languages = await _repository.GetLanguages();
                 serviceResponse.Data = languages.Select(l => _mapper.Map<GetLanguageDto>(l)).ToList();
-
             }
             catch (Exception ex)
             {

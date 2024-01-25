@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using recruitment_app.DTOs;
+using recruitment_app.DTOs.QuestionDTOs;
 using recruitment_app.Models;
 
 namespace recruitment_app
@@ -16,6 +13,7 @@ namespace recruitment_app
             CreateMap<User, DeleteUserDto>();
             CreateMap<Language, GetLanguageDto>();
             CreateMap<GetLanguageDto, Language>();
+            CreateMap<Question, GetQuestionDto>();
         }
     }
 }
