@@ -12,15 +12,15 @@ using recruitment_app.Data;
 namespace recruitment_app.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231215123039_questionLanguageRelation")]
-    partial class questionLanguageRelation
+    [Migration("20240203145054_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

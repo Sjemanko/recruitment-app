@@ -44,7 +44,7 @@ namespace recruitment_app.Repositories.LanguageRepository
 
         public async Task<Language?> GetLanguageByName(string name)
         {
-            var language = await _context.Languages.FirstOrDefaultAsync(l => l.Name == name) ?? throw new Exception("Language not found");
+            var language = await _context.Languages.FirstOrDefaultAsync(l => l.Name == name);
             return language;
         }
     }

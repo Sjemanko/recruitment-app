@@ -18,11 +18,6 @@ namespace recruitment_app.Data
             modelBuilder.Entity<User>()
                 .HasMany(l => l.Languages)
                 .WithMany();
-
-            // modelBuilder.Entity<Question>()
-            //     .HasOne(l => l.Language)
-            //     .WithMany(q => q.Questions)
-            //     .HasForeignKey("LanguageId");
         }
     }
 }
